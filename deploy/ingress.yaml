@@ -1,0 +1,15 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1beta1
+metadata:
+  name: testdmn
+spec:
+  rules:
+    # update to your host address for inbound traffic
+    - host: testdmn.example.com
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              serviceName: testdmn
+              servicePort: 8080-tcp

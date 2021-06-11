@@ -1,0 +1,29 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: testdmn
+  labels:
+    app: testdmn
+    app.kubernetes.io/component: testdmn
+    app.kubernetes.io/instance: testdmn
+    app.kubernetes.io/part-of: testdmn-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testdmn
+  template:
+    metadata:
+      labels:
+        app: testdmn
+        deploymentconfig: testdmn
+    spec:
+      containers:
+        - name: testdmn
+          # update to your repo
+          image: quay.io/{REPO_HERE}/testdmn:latest
+          ports:
+            - containerPort: 8080
+# Include if in a private repo
+#      imagePullSecrets:
+#        - name: pull-secret
