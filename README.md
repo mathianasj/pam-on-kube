@@ -16,7 +16,7 @@ Demonstrates the cababilities of running an immutable image for DM inside of a c
 #### Walkthrough
 1. Run the S2I build against the hello rules sample repo
     ```
-    s2i build https://github.com/jboss-container-images/rhdm-7-openshift-image.git --context-dir quickstarts/hello-rules/hellorules registry.redhat.io/rhdm-7/rhdm-kieserver-rhel8:7.10.1 quay.io/mathianasj/testdmn:demo
+    s2i build https://github.com/jboss-container-images/rhdm-7-openshift-image.git --context-dir quickstarts/hello-rules/hellorules registry.redhat.io/rhdm-7/rhdm-kieserver-rhel8:7.10.1 quay.io/{REPO_HERE}/testdmn:demo
     ```
 1. Push the built image into a repsoitory which the kubernetes cluster will have access
     ```
