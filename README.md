@@ -26,6 +26,7 @@ Demonstrates the cababilities of running an immutable image for DM inside of a c
     1. You will need to update ingress.yaml host to match your deployment's ingress settings
     ```
     kubectl create -f ./deploy/deployment.yaml
+    kubectl create -f ./deploy/service.yaml
     kubectl create -f ./deploy/ingress.yaml
     ```
 1. Build the client and test the execution
