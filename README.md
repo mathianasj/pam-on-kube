@@ -1,6 +1,6 @@
 # PAM in Containers
 
-## DMN
+## Decision Manager
 
 ### S2I
 
@@ -51,7 +51,7 @@ Demonstrates the cababilities of running an immutable image for DM inside of a c
         ```
 
 
-## PAM
+## Process Automation Manager
 
 ### S2I
 
