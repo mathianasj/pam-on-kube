@@ -1,0 +1,46 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: testpam
+  labels:
+    app: testpam
+    app.kubernetes.io/component: testpam
+    app.kubernetes.io/instance: testpam
+    app.kubernetes.io/part-of: testpam-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testpam
+  template:
+    metadata:
+      labels:
+        app: testpam
+        deploymentconfig: testpam
+    spec:
+      containers:
+        - name: testpam
+          # update to your repo
+          image: quay.io/{REPO_HERE}/testpam:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATASOURCES
+              value: RHPAM
+            - name: RHPAM_DRIVER
+              value: h2
+            - name: RHPAM_JNDI
+              value: java:jboss/datasources/rhpam
+            - name: RHPAM_USERNAME
+              value: sa
+            - name: RHPAM_PASSWORD
+              value: sa
+            - name: RHPAM_JTA
+              value: "false"
+            - name: RHPAM_NONXA
+              value: "true"
+            - name: RHPAM_URL
+              value: jdbc:h2:mem:rhpam;DB_CLOSE_DELAY=-1
+# Include if in a private repo
+      imagePullSecrets:
+      - name: pull-secret

@@ -32,9 +32,7 @@ Demonstrates the cababilities of running an immutable image for DM inside of a c
 1. Build the client and test the execution
     1. Clone the repo locally
         ```
-        git clone https://github.com/jboss-container-images/rhdm-7-openshift-image.git
-        cd rhdm-7-openshift-image/quickstarts/hello-rules
-        ```
+### S2I
     1. Build the client app with maven
         ```
         mvn clean package install
@@ -50,4 +48,52 @@ Demonstrates the cababilities of running an immutable image for DM inside of a c
         -Dpassword="admin1!" \
         -Dhost="testdmn.example.com" \
         -Dport=80
+        ```
+
+
+## PAM
+
+### S2I
+
+#### Resources
+
+|Title|URL|
+|-----|---|
+|S2I builder image|https://github.com/jboss-container-images/rhpam-7-openshift-image
+|Example Rules Project|https://github.com/jboss-container-images/rhpam-7-openshift-image/blob/main/quickstarts/hello-rules/README.md
+
+#### Walkthrough
+1. Run the S2I build against the sample library process quickstart
+    ```
+    s2i build https://github.com/jboss-container-images/rhpam-7-openshift-image.git --context-dir quickstarts/library-process/library registry.redhat.io/rhpam-7/rhpam-kieserver-rhel8:7.10.1 quay.io/{REPO_HERE}/testpam:demo
+    ```
+1. Push the built image into a repsoitory which the kubernetes cluster will have access
+    ```
+    docker push quay.io/mathianasj/testpam:demo
+    ```
+1. Deploy the kubernetes resources
+    1. You will need to update ingress.yaml host to match your deployment's ingress settings
+    ```
+    kubectl create -f ./pam/deployment.yaml
+    kubectl create -f ./pam/service.yaml
+    kubectl create -f ./pam/ingress.yaml
+    ```
+1. Build the client and test the execution
+    1. Build the client app with eap s2i
+        ```
+        s2i build https://github.com/jboss-container-images/rhpam-7-openshift-image.git registry.redhat.io/jboss-eap-7/eap73-openjdk8-openshift-rhel7:latest quay.io/mathianasj/testpamclient:demo --context-dir quickstarts/library-process
+        ```
+    1. Push the built image into a repsoitory which the kubernetes cluster will have access
+        ```
+        docker push quay.io/mathianasj/testpamclient:demo
+        ```
+    1. You will need to update ingress.yaml host to match your deployment's ingress settings
+        ```
+        kubectl create -f ./pam/client_deployment.yaml
+        kubectl create -f ./pam/client_service.yaml
+        kubectl create -f ./pam/client_ingress.yaml
+        ```
+    1. Run the client and execute against the kieserver running in kubernetes
+        ```
+        curl http://testpamclient.example.com/library?command=runRemoteRest&host=testpam&port=8080&username=adminUser&password=admin1!
         ```
